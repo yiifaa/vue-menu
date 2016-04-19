@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueI18n from "vue-i18n"
 import message_zh_CN from "./i18n/message_zh_CN"
 import App from './App.vue'
+
 import page from 'page'
 
 /* eslint-disable no-new */

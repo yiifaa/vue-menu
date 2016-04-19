@@ -16,44 +16,69 @@
         <a href="/" class="navbar-brand">Vue-Menu</a>
       </div>
       <ul class="nav navbar-nav">
-        <li>
-          <a href="/basic">{{$t('menu.basic')}}</a>
-        </li>
-        <li>
-          <a href="/async/">{{$t('menu.async')}}</a>
-        </li>
-        <li class="active">
-          <a href="/conn/">{{$t('menu.conn')}}</a>
-        </li>
-        <li>
-          <a href="/basic/123">{{$t('menu.dynamic')}}</a>
-        </li>
-        <li>
-          <a href="../customer/">{{$t('menu.customer')}}</a>
-        </li>
-        <li>
-          <a href="../i18n/">{{$t('menu.i18n')}}</a>
-        </li>
+          <menu :init-menus="appMenus" :include-child="false"></menu>
       </ul>
     </div>
   </header>
-  <a href="/app/hello">Hello</a>
-  <a href="/app/world">world</a>
-  <component :is="view"></component>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <component :is="view"></component>
+            </div>
+            <div class="col-md-4">
+                <ul>
+                    <menu :init-menus="secMenus" :include-child="true"></menu>
+                </ul>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
 import hello from './components/Hello.vue'
 import world from './components/World.vue'
+import store from './components/ImmutableStore'
+import menu from './components/Menu.vue'
+import menus from './menus'
 
 export default {
 
-  props : ["view"],
+    props: ["view"],
 
-  components: {
-    hello,
-    world
-  }
+    components: {
+        hello,
+        world,
+        menu
+    },
+
+    data () {
+        return {
+            menus,
+            secMenus
+        }
+    },
+
+    events : {
+        "menu.refresh" : function(id, appMenu, random) {
+            
+        }
+    },
+
+    created () {
+        //初始化菜单
+        store.init(this.menus);
+    },
+
+    computed : {
+        /**
+         * 获取所有的APP节点
+         */
+        appMenus () {
+            return store.findRootChildren()
+        }
+    }
+
 }
 </script>
 <style src="../node_modules/bootstrap/dist/css/bootstrap.css"></style>
