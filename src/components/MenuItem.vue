@@ -1,8 +1,8 @@
 <template>
   <li :class="{'active' : selected}">
-      <a v-text="title" href="#" @click="changeState"></a>
-      <ul v-if="showChildren">
-          <menu-item v-for="child in children" :menu-data="child">
+      <a v-text="title" class="yii-menu-link" href="#" @click="changeState"></a>
+      <ul class="nav nav-pills nav-stacked yii-menu" v-if="showChildren">
+          <menu-item v-for="child in children" :menu-data.sync="child">
           </menu-item>
       </ul>
   </li>
@@ -17,10 +17,17 @@
         props  : ["menuData", "includeChild"],
 
         events : {
-            "menu.deactive" : function(id) {
-                if(this.id === id) {
-                    this.selected = false
+            "menu.deactive" : function(id, topMenu) {
+                if(topMenu) {
+                    if(this.isTopMenu && this.id !== id) {
+                        this.selected = false
+                    }
+                } else {
+                    if(!this.isTopMenu && this.id !== id) {
+                        this.selected = false
+                    }
                 }
+                this.$broadcast("menu.deactive", id, topMenu)
             }
         },
 
@@ -50,7 +57,7 @@
             },
 
             children () {
-                return store.findChildren(this.id)
+                return store.cloneChildren(this.id)
             },
 
             /**

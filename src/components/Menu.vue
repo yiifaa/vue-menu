@@ -15,9 +15,10 @@
 
         events    : {
             "menu.active" : function(id, isTopMenu) {
+                /**
                 if(isTopMenu) {
                     if(this.currentApp != id) {
-                        this.$broadcast("menu.deactive", this.currentApp)
+                        this.$broadcast("menu.deactive", this.currentApp, this.currentMenu)
                         this.currentApp = id
                     }
                 } else {
@@ -26,17 +27,22 @@
                         this.currentMenu = id
                     }
                 }
+                 **/
+                //直接通知刷新，取消当前焦点缓存
+                this.$broadcast("menu.deactive", id, isTopMenu)
                 //刷新页面，动态刷新组件
                 this.$dispatch("menu.refresh", id, isTopMenu, Date.now().valueOf())
             }
         },
 
+        /**
         data () {
             return {
                 currentApp : null,
                 currentMenu : null
             }
         },
+         **/
 
         computed : {
 
@@ -53,4 +59,22 @@
         }
     }
 </script>
+<style lang="less">
+    .nav {
+        &.nav-pills {
+            width : 100%;
+            >li {
+                width : 100%;
+                float : none;
+             }
+         }
+    }
+    .yii-menu {
+        .yii-menu {
+            .yii-menu-link {
+                padding-left : 30px;
+            }
+        }
+    }
+</style>
 

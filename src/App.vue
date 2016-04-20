@@ -24,10 +24,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8">
+                <a href="/app/hello">hello</a>
                 <component :is="view"></component>
             </div>
             <div class="col-md-4">
-                <ul>
+                <ul class="nav nav-pills nav-stacked yii-menu">
                     <menu :init-menus.sync="secMenus" :include-child="true"></menu>
                 </ul>
             </div>
@@ -40,8 +41,10 @@ import hello from './components/Hello.vue'
 import world from './components/World.vue'
 import store from './components/ImmutableStore'
 import menu from './components/Menu.vue'
-import menus from './menus'
+import MenuServ from './MenuServ'
+import page from 'page'
 
+let menus = MenuServ.get()
 export default {
 
     props: ["view"],
@@ -54,6 +57,7 @@ export default {
 
     data () {
         return {
+            view      : null,
             menus,
             secMenus : null
         }
@@ -62,14 +66,15 @@ export default {
     events : {
         "menu.refresh" : function(id, appMenu, random) {
             if(appMenu) {
-                this.secMenus = store.findChildren(id)
+                this.secMenus = store.cloneChildren(id)
             }
         }
     },
 
     created () {
         //初始化菜单
-        store.init(this.menus);
+        store.init(this.menus)
+        this.initPage()
     },
 
     computed : {
@@ -79,6 +84,29 @@ export default {
         appMenus () {
             return store.findRootChildren()
         }
+    },
+
+    methods : {
+
+        /**
+         * 初始化路由
+         */
+        initPage () {
+            page.base("/app")
+
+            page("*", (context, next) => {
+                next()
+            })
+
+            page("/:app", (context, next) => {
+                this.view = context.params.app
+            })
+
+            page.start({
+                dispatch : true
+            })
+        }
+
     }
 
 }

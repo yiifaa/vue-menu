@@ -10,7 +10,20 @@ let store = {
         if(!Array.isArray(value)) {
             throw new Error("store must be array");
         }
-        Object.defineProperty(this, "value", {
+        //拷贝新值
+        /****/
+        let copyVal = []
+        value.forEach((val) => {
+            let copy = Object.assign({}, val)
+            copyVal.push(copy)
+        })
+        Object.assign(this, {
+            get copy() {
+                return copyVal
+            }
+        })
+        //定义缓存数据
+        Object.defineProperty(this, "cache", {
             value         : value,
             writable     : false,
             enumerable   : false,
@@ -22,9 +35,23 @@ let store = {
      * 获取所有的儿子节点
      */
     findChildren (id) {
-        return this.value.filter((item) => {
+        return this.cache.filter((item) => {
             return item.parent === id
         })
+    },
+
+    /**
+     * 拷贝新值
+     */
+    cloneChildren (id) {
+        let copyVal = []
+        this.copy.forEach((item) => {
+            if(item.parent === id) {
+                let copy = Object.assign({}, item)
+                copyVal.push(copy)
+            }
+        })
+        return copyVal
     },
 
     /**
