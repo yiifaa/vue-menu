@@ -9,7 +9,7 @@ export default [
         icon      : ""
     }, {
         id        : "relation_1",
-        selected  : true,
+        selected  : false,
         opened    : false,
         title     : "实例1",
         href      :  "",
