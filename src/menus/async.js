@@ -9,7 +9,7 @@ export default [
         icon      : ""
     }, {
         id        : "async_1",
-        selected  : true,
+        selected  : false,
         opened    : false,
         title     : "异步验证1",
         href      :  "async_1",

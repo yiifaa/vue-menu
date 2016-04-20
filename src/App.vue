@@ -42,6 +42,7 @@ import world from './components/World.vue'
 import store from './components/ImmutableStore'
 import menu from './components/Menu.vue'
 import MenuServ from './MenuServ'
+import querystring from './utils/querystring'
 import page from 'page'
 
 let menus = MenuServ.get()
@@ -78,6 +79,7 @@ export default {
     },
 
     computed : {
+
         /**
          * 获取所有的APP节点
          */
@@ -95,9 +97,13 @@ export default {
             page.base("/app")
 
             page("*", (context, next) => {
+                this.$dispatch("page.queryString", querystring.parse(ctx.querystring))
                 next()
             })
 
+            /**
+             * 注册所有的访问路径
+             */
             page("/:app", (context, next) => {
                 this.view = context.params.app
             })

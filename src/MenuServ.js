@@ -7,7 +7,11 @@ import asyn     from "./menus/async"
 
 export default {
 
+    /**
+     * 将所有的菜单按顺序注册
+     */
     data  : [simple, asyn, relation],
+
     /**
      * 将菜单对象转换为数组
      */
