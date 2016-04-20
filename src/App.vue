@@ -28,7 +28,7 @@
             </div>
             <div class="col-md-4">
                 <ul>
-                    <menu :init-menus="secMenus" :include-child="true"></menu>
+                    <menu :init-menus.sync="secMenus" :include-child="true"></menu>
                 </ul>
             </div>
         </div>
@@ -55,13 +55,15 @@ export default {
     data () {
         return {
             menus,
-            secMenus
+            secMenus : null
         }
     },
 
     events : {
         "menu.refresh" : function(id, appMenu, random) {
-            
+            if(appMenu) {
+                this.secMenus = store.findChildren(id)
+            }
         }
     },
 
