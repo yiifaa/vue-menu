@@ -25,7 +25,7 @@ export default [
         icon      : ""
     }, {
         id        : "relation_2_1",
-        selected  : true,
+        selected  : false,
         opened    : false,
         title     : "实例2_1",
         href      :  "",

@@ -97,7 +97,7 @@ export default {
             page.base("/app")
 
             page("*", (context, next) => {
-                this.$dispatch("page.queryString", querystring.parse(ctx.querystring))
+                this.$dispatch("page.queryString", querystring.parse(context.querystring))
                 next()
             })
 

@@ -15,24 +15,13 @@
 
         events    : {
             "menu.active" : function(id, isTopMenu) {
-                /**
-                if(isTopMenu) {
-                    if(this.currentApp != id) {
-                        this.$broadcast("menu.deactive", this.currentApp, this.currentMenu)
-                        this.currentApp = id
-                    }
-                } else {
-                    if(this.currentMenu != id) {
-                        this.$broadcast("menu.deactive", this.currentMenu)
-                        this.currentMenu = id
-                    }
-                }
-                 **/
                 //直接通知刷新，取消当前焦点缓存
                 this.$broadcast("menu.deactive", id, isTopMenu)
                 //刷新页面，动态刷新组件
                 this.$dispatch("menu.refresh", id, isTopMenu, Date.now().valueOf())
-            }
+            },
+
+
         },
 
         /**

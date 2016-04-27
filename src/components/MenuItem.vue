@@ -27,6 +27,9 @@
                         this.selected = false
                     }
                 }
+                if(this.id === id) {
+                    this.selected = true
+                }
                 this.$broadcast("menu.deactive", id, topMenu)
             }
         },
@@ -53,7 +56,7 @@
                 if(this.includeChild === false) {
                     return false
                 }
-                return !this.isLeaf
+                return !this.isLeaf && this.opened
             },
 
             children () {
@@ -76,7 +79,9 @@
         methods : {
 
             changeState () {
-                this.selected = true
+                if(!this.isLeaf) {
+                    this.opened = !this.opened
+                }
                 this.$dispatch("menu.active", this.id, this.isTopMenu)
             }
         }
