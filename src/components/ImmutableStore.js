@@ -40,6 +40,33 @@ let store = {
         })
     },
 
+    findItem (id) {
+       for(let i = 0, len = this.cache.length; i < len; i++) {
+           if(id == this.cache[i].id) {
+               return this.cache[i]
+           }
+       }
+       return false
+    },
+
+    /**
+     * 根据id查找访问路径
+     */
+    findVisitPath (id) {
+        let visit = id,
+            path  = []
+        while(visit !== "#") {
+            let item = this.findItem(visit)
+            if(item !== false) {
+                path.unshift(item)
+                visit = item.parent
+            } else {
+                break
+            }
+        }
+        return path
+    },
+
     /**
      * 拷贝新值
      */

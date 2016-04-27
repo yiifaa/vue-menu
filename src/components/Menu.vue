@@ -5,6 +5,7 @@
 
 <script>
     import menuItem from './MenuItem.vue'
+    import store from './ImmutableStore'
     export default {
 
         props  : ["initMenus", "includeChild"],
@@ -21,7 +22,32 @@
                 this.$dispatch("menu.refresh", id, isTopMenu, Date.now().valueOf())
             },
 
-
+            /**
+             *
+             */
+            "menu.selected" : function(id) {
+                let path = store.findVisitPath(id)
+                let self = this
+                let active = function(p) {
+                    if(p.length > 0) {
+                        let item = p.shift()
+                        self.$emit("menu.active", item.id, item.parent == "#")
+                        setTimeout(() => {
+                            active(p)
+                        }, 0)
+                    }
+                }
+                active(path)
+                /**
+                for(let i = 0, len = path.length, item, isTop; i < len; i ++) {
+                    item = path[i]
+                    isTop = (item.parent == "#")
+                    setTimeout(() => {
+                        this.$emit("menu.active", item.id, isTop)
+                    }, 10 * i)
+                }
+                 **/
+            }
         },
 
         /**

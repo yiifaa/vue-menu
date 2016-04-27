@@ -25,6 +25,8 @@
         <div class="row">
             <div class="col-md-8">
                 <a href="/app/hello">hello</a>
+                <input type="text" v-model="viewModel"/>
+                <button class="btn btn-default" @click="changeView">切换视图</button>
                 <component :is="view"></component>
             </div>
             <div class="col-md-4">
@@ -60,7 +62,8 @@ export default {
         return {
             view      : null,
             menus,
-            secMenus : null
+            secMenus : null,
+            viewModel : ""
         }
     },
 
@@ -111,6 +114,10 @@ export default {
             page.start({
                 dispatch : true
             })
+        },
+
+        changeView () {
+            this.$broadcast("menu.selected", this.viewModel)
         }
 
     }

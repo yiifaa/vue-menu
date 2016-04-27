@@ -29,6 +29,9 @@
                 }
                 if(this.id === id) {
                     this.selected = true
+                    if(!this.isLeaf && !this.isTopMenu) {
+                        this.opened = true
+                    }
                 }
                 this.$broadcast("menu.deactive", id, topMenu)
             }
